@@ -1,0 +1,86 @@
+# Quich search:
+# 1-LINT
+# 2-BUILD
+# 3-TEST
+# 4-DEPLOY
+
+default:
+  image: fecton/diploma-ubuntu-runner-custom:0.0.4 # TODO: prepare docker image
+
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+
+# include:
+#   - local: "cicd/1-linters/*.yaml"
+#   - local: "cicd/2-terraform/*.yaml"
+
+stages:
+- 1-lint
+- 2-build
+- 3-test
+- 4-deploy
+
+# ==================================
+#             1-LINT
+# ==================================
+1-terraform-lint:
+  stage: 1-lint
+  script: |
+    cd terraform/
+    terraform init -backend=false
+    terraform validate
+    terraform fmt -check
+
+2-helm-lint:
+  stage: 1-lint
+  script: |
+    cd helm-chart/
+    helm lint --strict
+
+3-kustomize-lint:
+  stage: 1-lint
+  script: |
+    cd kustomize/
+    kubectl kustomize .
+
+
+# ==================================
+#            2-BUILD
+# ==================================
+1-terraform-build:
+  when: manual # FIXME: enable later
+  stage: 2-build
+  script: |
+    echo "Skipped."
+
+2-helm-build:
+  when: manual # FIXME: enable later
+  stage: 2-build
+  script: |
+    echo "Skipped."
+
+3-kustomize-build:
+  stage: 2-build
+  script: |
+    echo "Skipped."
+
+
+# ==================================
+#            3-TEST
+# ==================================
+test:
+  when: manual # FIXME: enable later
+  stage: 3-test
+  script: |
+    echo "Skipped."
+
+
+# ==================================
+#            4-DEPLOY
+# ==================================
+deploy:
+  when: manual # FIXME: enable later
+  stage: 4-deploy
+  script: |
+    echo "Skipped."
+
