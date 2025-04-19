@@ -10,9 +10,9 @@ default:
 variables:
   GIT_SSL_NO_VERIFY: "true"
 
-# include:
-#   - local: "cicd/1-linters/*.yaml"
-#   - local: "cicd/2-terraform/*.yaml"
+include:
+  - local: "cicd/1-linters/*.yaml"
+  - local: "cicd/2-terraform/*.yaml"
 
 stages:
 - 1-lint
@@ -23,64 +23,69 @@ stages:
 # ==================================
 #             1-LINT
 # ==================================
-1-terraform-lint:
-  stage: 1-lint
-  script: |
-    cd terraform/
-    terraform init -backend=false
-    terraform validate
-    terraform fmt -check
+# 1-terraform-lint:
+#   stage: 1-lint
+#   script: |
+#     cd terraform/
+#     terraform init -backend=false
+#     terraform validate
+#     terraform fmt -check
 
-2-helm-lint:
-  stage: 1-lint
-  script: |
-    cd helm-chart/
-    helm lint --strict
+# 2-helm-lint:
+#   stage: 1-lint
+#   script: |
+#     cd helm-chart/
+#     helm lint --strict
 
-3-kustomize-lint:
-  stage: 1-lint
-  script: |
-    cd kustomize/
-    kubectl kustomize .
+# 3-kustomize-lint:
+#   stage: 1-lint
+#   script: |
+#     cd kustomize/
+#     kubectl kustomize .
 
 
 # ==================================
 #            2-BUILD
 # ==================================
-1-terraform-build:
-  when: manual # FIXME: enable later
-  stage: 2-build
-  script: |
-    echo "Skipped."
+# 1-terraform-build:
+#   when: manual # FIXME: enable later
+#   stage: 2-build
+#   script: |
+#     echo "Skipped."
 
-2-helm-build:
-  when: manual # FIXME: enable later
-  stage: 2-build
-  script: |
-    echo "Skipped."
+# 2-helm-build:
+#   when: manual # FIXME: enable later
+#   stage: 2-build
+#   script: |
+#     echo "Skipped."
 
-3-kustomize-build:
-  stage: 2-build
-  script: |
-    echo "Skipped."
+# 3-kustomize-build:
+#   stage: 2-build
+#   script: |
+#     echo "Skipped."
 
 
 # ==================================
 #            3-TEST
 # ==================================
-test:
-  when: manual # FIXME: enable later
-  stage: 3-test
-  script: |
-    echo "Skipped."
+# test:
+#   when: manual # FIXME: enable later
+#   stage: 3-test
+#   script: |
+#     echo "Skipped."
 
 
 # ==================================
 #            4-DEPLOY
 # ==================================
 deploy:
-  when: manual # FIXME: enable later
   stage: 4-deploy
-  script: |
-    echo "Skipped."
-
+  # when: manual
+  variables:
+    KUBE_CONTEXT: 1-general/microservices-demo:cicd-deployment
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    # - kubectl get po
+    - kubectl apply -f ./release/kubernetes-manifests.yaml

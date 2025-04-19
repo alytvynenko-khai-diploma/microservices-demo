@@ -22,6 +22,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: emailservice
+  namespace: application
   labels:
     app: emailservice
 spec:
@@ -77,6 +78,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: emailservice
+  namespace: application
   labels:
     app: emailservice
 spec:
@@ -92,11 +94,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: emailservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: checkoutservice
+  namespace: application
   labels:
     app: checkoutservice
 spec:
@@ -159,6 +163,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: checkoutservice
+  namespace: application
   labels:
     app: checkoutservice
 spec:
@@ -179,6 +184,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recommendationservice
+  namespace: application
   labels:
     app: recommendationservice
 spec:
@@ -236,6 +242,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: recommendationservice
+  namespace: application
   labels:
     app: recommendationservice
 spec:
@@ -251,11 +258,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: recommendationservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: application
   labels:
     app: frontend
 spec:
@@ -349,6 +358,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: application
   labels:
     app: frontend
 spec:
@@ -364,6 +374,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-external
+  namespace: application
   labels:
     app: frontend
 spec:
@@ -379,11 +390,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: frontend
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: paymentservice
+  namespace: application
   labels:
     app: paymentservice
 spec:
@@ -437,6 +450,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paymentservice
+  namespace: application
   labels:
     app: paymentservice
 spec:
@@ -452,11 +466,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: paymentservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productcatalogservice
+  namespace: application
   labels:
     app: productcatalogservice
 spec:
@@ -510,6 +526,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: productcatalogservice
+  namespace: application
   labels:
     app: productcatalogservice
 spec:
@@ -524,12 +541,14 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: productcatalogservice
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cartservice
+  namespace: application
   labels:
     app: cartservice
 spec:
@@ -584,6 +603,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cartservice
+  namespace: application
   labels:
     app: cartservice
 spec:
@@ -599,11 +619,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cartservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cart
+  namespace: application
   labels:
     app: redis-cart
 spec:
@@ -658,6 +680,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-cart
+  namespace: application
   labels:
     app: redis-cart
 spec:
@@ -673,6 +696,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: loadgenerator
+  namespace: application
   labels:
     app: loadgenerator
 spec:
@@ -755,11 +779,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: loadgenerator
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currencyservice
+  namespace: application
   labels:
     app: currencyservice
 spec:
@@ -814,6 +840,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: currencyservice
+  namespace: application
   labels:
     app: currencyservice
 spec:
@@ -829,11 +856,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: currencyservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shippingservice
+  namespace: application
   labels:
     app: shippingservice
 spec:
@@ -887,6 +916,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shippingservice
+  namespace: application
   labels:
     app: shippingservice
 spec:
@@ -902,11 +932,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: shippingservice
+  namespace: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adservice
+  namespace: application
   labels:
     app: adservice
 spec:
@@ -962,6 +994,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: adservice
+  namespace: application
   labels:
     app: adservice
 spec:
@@ -977,4 +1010,5 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: adservice
+  namespace: application
 # [END gke_release_kubernetes_manifests_microservices_demo]
