@@ -5,7 +5,7 @@
 # 4-DEPLOY
 
 default:
-  image: fecton/diploma-ubuntu-runner-custom:0.0.4 # TODO: prepare docker image
+  image: fecton/diploma-ubuntu-runner-custom:0.0.5 # TODO: prepare docker image
 
 variables:
   GIT_SSL_NO_VERIFY: "true"
@@ -19,60 +19,84 @@ stages:
 - 2-build
 - 3-test
 - 4-deploy
+- 5-emergency-only
 
 # ==================================
 #             1-LINT
 # ==================================
-# 1-terraform-lint:
-#   stage: 1-lint
-#   script: |
-#     cd terraform/
-#     terraform init -backend=false
-#     terraform validate
-#     terraform fmt -check
+1-terraform-lint:
+  stage: 1-lint
+  script:
+    - cd terraform/
+    - terraform init -backend=false
+    - terraform validate
+    - terraform fmt -check
 
-# 2-helm-lint:
-#   stage: 1-lint
-#   script: |
-#     cd helm-chart/
-#     helm lint --strict
+2-helm-lint:
+  stage: 1-lint
+  script:
+    - cd helm-chart/
+    - helm lint --strict
 
-# 3-kustomize-lint:
-#   stage: 1-lint
-#   script: |
-#     cd kustomize/
-#     kubectl kustomize .
+3-kustomize-lint:
+  stage: 1-lint
+  script:
+    - cd kustomize/
+    - kubectl kustomize .
 
 
 # ==================================
 #            2-BUILD
 # ==================================
-# 1-terraform-build:
-#   when: manual # FIXME: enable later
-#   stage: 2-build
-#   script: |
-#     echo "Skipped."
+1-terraform-build:
+  when: manual # FIXME: enable later
+  stage: 2-build
+  script:
+    - echo "No implementation. Skipped."
 
-# 2-helm-build:
-#   when: manual # FIXME: enable later
-#   stage: 2-build
-#   script: |
-#     echo "Skipped."
+2-helm-build:
+  # when: manual # FIXME: enable later
+  stage: 2-build
+  script:
+    - cd helm-chart/
+    - helm template . > helm-template.yaml
+    - cat helm-template.yaml
+    - kustomize create --resources helm-template.yaml
+    - kustomize build .
 
-# 3-kustomize-build:
-#   stage: 2-build
-#   script: |
-#     echo "Skipped."
+3-kustomize-build:
+  stage: 2-build
+  script:
+    - cd kustomize/
+    - kubectl kustomize .
 
 
 # ==================================
 #            3-TEST
 # ==================================
-# test:
-#   when: manual # FIXME: enable later
-#   stage: 3-test
-#   script: |
-#     echo "Skipped."
+1-terraform-test:
+  when: manual # FIXME: enable later
+  stage: 3-test
+  script:
+    - echo "No implementation. Skipped."
+
+2-helm-test:
+  when: manual # FIXME: enable later
+  stage: 3-test
+  script: |
+    - echo "No implementation. Skipped."
+
+3-kustomize-test:
+  # when: manual # FIXME: enable later
+  stage: 3-test
+  script: |
+    cd kustomize/tests
+    KUSTOMIZE_TESTS_SUBFOLDERS=$(ls -d */)
+    for test in $KUSTOMIZE_TESTS_SUBFOLDERS;
+    do
+        echo "## kustomize build for " + $test
+        kustomize build $test
+    done
 
 
 # ==================================
@@ -87,5 +111,15 @@ deploy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script:
-    # - kubectl get po
     - kubectl apply -f ./release/kubernetes-manifests.yaml
+
+destroy:
+  stage: 5-emergency-only
+  when: manual
+  variables:
+    KUBE_CONTEXT: 1-general/microservices-demo:cicd-deployment
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - kubectl delete -f ./release/kubernetes-manifests.yaml
