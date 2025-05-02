@@ -1,8 +1,9 @@
 # Quich search:
-# 1-LINT
-# 2-BUILD
-# 3-TEST
-# 4-DEPLOY
+# 1-lint
+# 2-build
+# 3-test
+# 4-deploy
+# 5-emergency-only
 
 default:
   image: fecton/diploma-ubuntu-runner-custom:0.0.5 # TODO: prepare docker image
