@@ -6,7 +6,7 @@
 # 5-emergency-only
 
 default:
-  image: fecton/diploma-ubuntu-runner-custom:0.0.5 # TODO: prepare docker image
+  image: fecton/diploma-ubuntu-runner-custom:0.0.6 # TODO: prepare docker image
 
 variables:
   GIT_SSL_NO_VERIFY: "true"
