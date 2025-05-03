@@ -1,9 +1,11 @@
 # Quich search:
-# 1-lint
-# 2-build
-# 3-test
-# 4-deploy
-# 5-emergency-only
+# - 0-start-measure
+# - 1-lint
+# - 2-build
+# - 3-test
+# - 4-deploy
+# - 5-emergency-only
+# - 0-end-measure
 
 default:
   image: fecton/diploma-ubuntu-runner-custom:0.0.6 # TODO: prepare docker image
@@ -16,11 +18,25 @@ include:
   - local: "cicd/2-terraform/*.yaml"
 
 stages:
+- 0-start-measure
 - 1-lint
 - 2-build
 - 3-test
 - 4-deploy
 - 5-emergency-only
+- 0-end-measure
+
+# ==================================
+#         0-START-MEASURE
+# ==================================
+0-start-measure:
+  stage: 0-start-measure
+  artifacts:
+    paths:
+      - dynamic-global-variables.sh
+  script: |
+    export START_TIME=$(date +%s)
+    echo "export START_TIME=$START_TIME" > dynamic-global-variables.sh
 
 # ==================================
 #             1-LINT
@@ -124,3 +140,38 @@ destroy:
     entrypoint: ['']
   script:
     - kubectl delete -f ./release/kubernetes-manifests.yaml
+
+
+# ==================================
+#           0-END-MEASURE
+# ==================================
+on_success:
+  stage: 0-end-measure
+  when: on_success
+  script: |
+    source ./dynamic-global-variables.sh
+    export END_TIME=$(date +%s)
+    export DELTA_TIME=$(echo "$END_TIME - $START_TIME" | bc)
+
+    echo END_TIME=$END_TIME
+    echo DELTA_TIME=$DELTA_TIME
+
+    curl -XPOST "$INFLUXDB_URL/api/v2/write?org=$INFLUXDB_ORG&bucket=$INFLUXDB_BUCKET&precision=s" \
+      --header "Authorization: Token $INFLUXDB_TOKEN" \
+      --data-raw "gitlab_pipelines,job=$CI_PROJECT_NAME status=0,duration=$DELTA_TIME $(date +%s)"
+
+on_failure:
+  stage: 0-end-measure
+  when: on_failure
+  script: |
+    source ./dynamic-global-variables.sh
+    export END_TIME=$(date +%s)
+    export DELTA_TIME=$(echo "$END_TIME - $START_TIME" | bc)
+
+    echo END_TIME=$END_TIME
+    echo DELTA_TIME=$DELTA_TIME
+
+    curl -XPOST "$INFLUXDB_URL/api/v2/write?org=$INFLUXDB_ORG&bucket=$INFLUXDB_BUCKET&precision=s" \
+      --header "Authorization: Token $INFLUXDB_TOKEN" \
+      --data-raw "gitlab_pipelines,job=$CI_PROJECT_NAME status=1,duration=$DELTA_TIME $(date +%s)"
+
