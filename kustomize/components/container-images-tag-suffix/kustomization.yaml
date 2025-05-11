@@ -15,25 +15,25 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 images:
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/adservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/cartservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/cartservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/checkoutservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/currencyservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/emailservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/emailservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/frontend
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/frontend
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/loadgenerator
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/paymentservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/paymentservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/productcatalogservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/recommendationservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
-- name: us-central1-docker.pkg.dev/google-samples/microservices-demo/shippingservice
+- name: registry.ci.alytvynenko.net/1-general/microservices-demo/shippingservice
   tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
