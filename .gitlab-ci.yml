@@ -87,6 +87,28 @@ stages:
     - cd kustomize/
     - kubectl kustomize .
 
+4-docker-build:
+  stage: 2-build
+  image: quay.io/buildah/stable
+  variables:
+    # Documentation:
+    # - https://docs.gitlab.com/ci/docker/using_kaniko/
+    # - https://docs.gitlab.com/ci/docker/using_docker_build/#buildah-example
+    STORAGE_DRIVER: vfs
+    BUILDAH_FORMAT: docker
+    FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
+
+    # Docker
+    DOCKER_BASE_PATH: registry.ci.alytvynenko.net/1-general
+    TAG: latest
+    PROJECT_ID: 1-general/microservices-demo
+  before_script:
+    # FIXME: enable TLS later
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - chmod +x ./ci-build-docker-images.sh
+    - ./ci-build-docker-images.sh
+
 
 # ==================================
 #            3-TEST
