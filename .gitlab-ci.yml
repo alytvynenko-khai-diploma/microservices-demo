@@ -104,7 +104,7 @@ stages:
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
 
     # Docker
-    DOCKER_BASE_PATH: registry.ci.alytvynenko.net/1-general
+    REPO_PREFIX: registry.ci.alytvynenko.net/1-general
     TAG: latest
     PROJECT_ID: 1-general/microservices-demo
   before_script:
