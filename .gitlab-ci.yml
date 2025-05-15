@@ -154,9 +154,7 @@ deploy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script:
-    - echo "Deleting all resources..."
-    - kubectl delete -f ./release/kubernetes-manifests.yaml
-    - echo "Creating all resources..."
+    # - kubectl delete -f ./release/kubernetes-manifests.yaml
     - kubectl apply -f ./release/kubernetes-manifests.yaml
 
 destroy:
