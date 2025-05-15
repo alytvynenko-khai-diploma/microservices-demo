@@ -19,8 +19,8 @@ buildah images
 buildah build \
     --build-arg TARGETOS=amd64 \
     --build-arg TARGETARCH=linux \
-    -t $image
-    # --build-arg SKAFFOLD_GO_GCFLAGS \ 
+    --build-arg SKAFFOLD_GO_GCFLAGS="" \
+    -t $image 
 buildah images
 buildah push --tls-verify=false $image
 
