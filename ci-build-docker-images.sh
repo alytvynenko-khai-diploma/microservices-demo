@@ -10,12 +10,17 @@ TAG="${TAG:?TAG env variable must be specified}"
 REPO_PREFIX="${REPO_PREFIX:?REPO_PREFIX env variable must be specified}"
 
 # build image
+svcname="frontend"
 image="${REPO_PREFIX}/$svcname:$TAG"
-cd "src/frontend"
+cd "src/$svcname"
 
 log "Building (and pushing) image on GitLab registry: ${image}"
 buildah images
-buildah build -t $image
+buildah build \
+    --build-arg TARGETOS=amd64 \
+    --build-arg TARGETARCH=linux \
+    -t $image
+    # --build-arg SKAFFOLD_GO_GCFLAGS \ 
 buildah images
 buildah push --tls-verify=false $image
 
