@@ -22,6 +22,7 @@ while IFS= read -d $'\0' -r dir; do
     image="${REPO_PREFIX}/$svcname:$TAG"
     (
         cd "${builddir}"
+        echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
         log "Building (and pushing) image on GitLab registry: ${image}"
         buildah images
         buildah build -t $image
