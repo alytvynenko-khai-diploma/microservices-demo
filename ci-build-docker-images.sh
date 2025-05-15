@@ -8,7 +8,6 @@ log() { echo "$1" >&2; }
 
 TAG="${TAG:?TAG env variable must be specified}"
 REPO_PREFIX="${REPO_PREFIX:?REPO_PREFIX env variable must be specified}"
-PROJECT_ID="${PROJECT_ID:?PROJECT_ID env variable must be specified e.g. google-samples}"
 
 while IFS= read -d $'\0' -r dir; do
     # build image
@@ -22,7 +21,6 @@ while IFS= read -d $'\0' -r dir; do
     image="${REPO_PREFIX}/$svcname:$TAG"
     (
         cd "${builddir}"
-        echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
         log "Building (and pushing) image on GitLab registry: ${image}"
         buildah images
         buildah build -t $image

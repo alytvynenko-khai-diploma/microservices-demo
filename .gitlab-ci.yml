@@ -104,9 +104,8 @@ stages:
     FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
 
     # Docker
-    REPO_PREFIX: registry.ci.alytvynenko.net/1-general
+    REPO_PREFIX: registry.ci.alytvynenko.net/1-general/microservices-demo
     TAG: latest
-    PROJECT_ID: 1-general/microservices-demo
   before_script:
     # FIXME: enable TLS later
     - echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
