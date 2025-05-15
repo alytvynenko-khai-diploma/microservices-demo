@@ -130,7 +130,7 @@ stages:
     - echo "No implementation. Skipped."
 
 3-kustomize-test:
-  # when: manual # FIXME: enable later
+  when: manual # FIXME: enable later
   stage: 3-test
   script: |
     cd kustomize/tests
