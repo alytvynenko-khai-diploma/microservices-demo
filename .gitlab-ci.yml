@@ -43,6 +43,7 @@ stages:
 # ==================================
 1-terraform-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd terraform/
     - terraform init -backend=false
@@ -51,12 +52,14 @@ stages:
 
 2-helm-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd helm-chart/
     - helm lint --strict
 
 3-kustomize-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd kustomize/
     - kubectl kustomize .
@@ -73,6 +76,7 @@ stages:
 
 2-helm-build:
   # when: manual # FIXME: enable later
+  when: manual # FIXME: enable after debugging
   stage: 2-build
   script:
     - cd helm-chart/
@@ -82,10 +86,32 @@ stages:
     - kustomize build .
 
 3-kustomize-build:
+  when: manual # FIXME: enable after debugging
   stage: 2-build
   script:
     - cd kustomize/
     - kubectl kustomize .
+
+4-docker-build:
+  stage: 2-build
+  image: quay.io/buildah/stable
+  variables:
+    # Documentation:
+    # - https://docs.gitlab.com/ci/docker/using_kaniko/
+    # - https://docs.gitlab.com/ci/docker/using_docker_build/#buildah-example
+    STORAGE_DRIVER: vfs
+    BUILDAH_FORMAT: docker
+    FQ_IMAGE_NAME: "$CI_REGISTRY_IMAGE/test"
+
+    # Docker
+    REPO_PREFIX: registry.ci.alytvynenko.net/1-general/microservices-demo
+    TAG: latest
+  before_script:
+    # FIXME: enable TLS later
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - chmod +x ./ci-build-docker-images.sh
+    - ./ci-build-docker-images.sh
 
 
 # ==================================
@@ -104,7 +130,7 @@ stages:
     - echo "No implementation. Skipped."
 
 3-kustomize-test:
-  # when: manual # FIXME: enable later
+  when: manual # FIXME: enable later
   stage: 3-test
   script: |
     cd kustomize/tests
@@ -128,6 +154,7 @@ deploy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script:
+    # - kubectl delete -f ./release/kubernetes-manifests.yaml
     - kubectl apply -f ./release/kubernetes-manifests.yaml
 
 destroy:
