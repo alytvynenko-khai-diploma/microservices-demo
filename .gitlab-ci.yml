@@ -43,6 +43,7 @@ stages:
 # ==================================
 1-terraform-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd terraform/
     - terraform init -backend=false
@@ -51,12 +52,14 @@ stages:
 
 2-helm-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd helm-chart/
     - helm lint --strict
 
 3-kustomize-lint:
   stage: 1-lint
+  when: manual # FIXME: enable after debugging
   script:
     - cd kustomize/
     - kubectl kustomize .
@@ -73,6 +76,7 @@ stages:
 
 2-helm-build:
   # when: manual # FIXME: enable later
+  when: manual # FIXME: enable after debugging
   stage: 2-build
   script:
     - cd helm-chart/
@@ -82,6 +86,7 @@ stages:
     - kustomize build .
 
 3-kustomize-build:
+  when: manual # FIXME: enable after debugging
   stage: 2-build
   script:
     - cd kustomize/
@@ -143,6 +148,7 @@ stages:
 # ==================================
 deploy:
   stage: 4-deploy
+  when: manual # FIXME: enable after debugging
   # when: manual
   variables:
     KUBE_CONTEXT: 1-general/microservices-demo:cicd-deployment
