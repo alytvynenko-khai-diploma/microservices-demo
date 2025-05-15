@@ -17,10 +17,10 @@ cd "src/$svcname"
 log "Building (and pushing) image on GitLab registry: ${image}"
 buildah images
 buildah build \
-    --build-arg TARGETOS=amd64 \
-    --build-arg TARGETARCH=linux \
+    --build-arg TARGETOS=linux \
+    --build-arg TARGETARCH=amd64 \
     --build-arg SKAFFOLD_GO_GCFLAGS="" \
-    -t $image 
+    -t $image
 buildah images
 buildah push --tls-verify=false $image
 
