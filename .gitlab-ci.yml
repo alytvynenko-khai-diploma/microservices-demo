@@ -140,14 +140,19 @@ stages:
 # ==================================
 deploy:
   stage: 4-deploy
-  # when: manual
   variables:
     KUBE_CONTEXT: 1-general/microservices-demo:cicd-deployment
   image:
     name: bitnami/kubectl:latest
     entrypoint: ['']
-  script:
-    - kubectl apply -f ./release/kubernetes-manifests.yaml
+  script: |
+    for svc in adservice cartservice checkoutservice currencyservice emailservice kustomization loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
+    do
+      kubectl apply -f ./kubernetes-manifests/$svc.yaml
+    done
+
+    - kubectl delete -f ./kubernetes-manifests/frontend.yaml
+    - kubectl apply -f ./kubernetes-manifests/frontend.yaml
 
 destroy:
   stage: 5-emergency-only
@@ -158,7 +163,7 @@ destroy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script:
-    - kubectl delete -f ./release/kubernetes-manifests.yaml
+    - kubectl delete -f ./kubernetes-manifests/*.yaml
 
 
 # ==================================

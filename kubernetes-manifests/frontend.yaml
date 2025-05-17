@@ -44,7 +44,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: frontend
+          image: registry.ci.alytvynenko.net/1-general/microservices-demo/frontend:latest
           ports:
           - containerPort: 8080
           readinessProbe:
