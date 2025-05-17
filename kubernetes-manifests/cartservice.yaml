@@ -15,6 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: cartservice
   labels:
     app: cartservice
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: cartservice
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/cartservice:v0.10.2
         ports:
         - containerPort: 7070
         env:
@@ -69,6 +70,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: cartservice
   labels:
     app: cartservice
@@ -84,11 +86,13 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: cartservice
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: redis-cart
   labels:
     app: redis-cart
@@ -143,6 +147,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: redis-cart
   labels:
     app: redis-cart

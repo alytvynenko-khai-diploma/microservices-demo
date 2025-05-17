@@ -146,13 +146,13 @@ deploy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script: |
-    for svc in adservice cartservice checkoutservice currencyservice emailservice kustomization loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
+    for svc in adservice cartservice checkoutservice currencyservice emailservice loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
     do
       kubectl apply -f ./kubernetes-manifests/$svc.yaml
     done
 
-    - kubectl delete -f ./kubernetes-manifests/frontend.yaml
-    - kubectl apply -f ./kubernetes-manifests/frontend.yaml
+    kubectl delete -f ./kubernetes-manifests/frontend.yaml || true
+    kubectl apply -f ./kubernetes-manifests/frontend.yaml
 
 destroy:
   stage: 5-emergency-only
@@ -162,8 +162,11 @@ destroy:
   image:
     name: bitnami/kubectl:latest
     entrypoint: ['']
-  script:
-    - kubectl delete -f ./kubernetes-manifests/*.yaml
+  script: |
+    for svc in adservice cartservice checkoutservice currencyservice emailservice loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
+    do
+      kubectl delete -f ./kubernetes-manifests/$svc.yaml
+    done
 
 
 # ==================================

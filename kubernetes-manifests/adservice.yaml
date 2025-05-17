@@ -15,6 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: adservice
   labels:
     app: adservice
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: adservice
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.2
         ports:
         - containerPort: 9555
         env:
@@ -70,6 +71,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: adservice
   labels:
     app: adservice
@@ -85,4 +87,5 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: adservice

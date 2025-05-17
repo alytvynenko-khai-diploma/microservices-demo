@@ -15,6 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: recommendationservice
   labels:
     app: recommendationservice
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: recommendationservice
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice:v0.10.2
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -72,6 +73,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: recommendationservice
   labels:
     app: recommendationservice
@@ -87,4 +89,5 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: recommendationservice

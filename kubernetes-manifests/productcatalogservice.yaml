@@ -15,6 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: productcatalogservice
   labels:
     app: productcatalogservice
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: productcatalogservice
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.2
         ports:
         - containerPort: 3550
         env:
@@ -68,6 +69,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: productcatalogservice
   labels:
     app: productcatalogservice
@@ -83,4 +85,5 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: productcatalogservice

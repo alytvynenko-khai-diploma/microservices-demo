@@ -15,6 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: application
   name: checkoutservice
   labels:
     app: checkoutservice
@@ -42,7 +43,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: checkoutservice
+          image: us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice:v0.10.2
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -77,6 +78,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: application
   name: checkoutservice
   labels:
     app: checkoutservice
@@ -92,4 +94,5 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  namespace: application
   name: checkoutservice
