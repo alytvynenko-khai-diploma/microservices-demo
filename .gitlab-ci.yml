@@ -103,9 +103,17 @@ stages:
   before_script:
     # FIXME: enable TLS later
     - echo "$CI_REGISTRY_PASSWORD" | buildah login --tls-verify=false -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-  script:
-    - chmod +x ./ci-build-docker-images.sh
-    - ./ci-build-docker-images.sh
+  script: |
+    # FIXME: algorithmically bad, fix later
+    for svc in adservice cartservice checkoutservice currencyservice emailservice loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
+    do
+      buildah pull us-central1-docker.pkg.dev/google-samples/microservices-demo/$svc:v0.10.2
+      buildah tag us-central1-docker.pkg.dev/google-samples/microservices-demo/$svc:v0.10.2 registry.ci.alytvynenko.net/1-general/microservices-demo/$svc:v0.10.2
+      buildah push --tls-verify=false registry.ci.alytvynenko.net/1-general/microservices-demo/$svc:v0.10.2
+    done
+
+    chmod +x ./ci-build-docker-images.sh
+    ./ci-build-docker-images.sh
 
 
 # ==================================
@@ -146,6 +154,7 @@ deploy:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   script: |
+    # FIXME: algorithmically bad, fix later
     for svc in adservice cartservice checkoutservice currencyservice emailservice loadgenerator paymentservice productcatalogservice recommendationservice shippingservice;
     do
       kubectl apply -f ./kubernetes-manifests/$svc.yaml
